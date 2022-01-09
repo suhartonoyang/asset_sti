@@ -67,7 +67,7 @@ public class DeviceRentedController {
 
 		if (newDeviceRented != null) {
 			resp.setCode(String.valueOf(HttpStatus.CREATED.value()));
-			resp.setMessage("Sucessfully Register!");
+			resp.setMessage("Data Sucessfully Saved!");
 			resp.setData(Arrays.asList(newDeviceRented));
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp);

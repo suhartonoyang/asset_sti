@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3388
--- Generation Time: Dec 19, 2021 at 05:31 AM
--- Server version: 10.4.10-MariaDB
--- PHP Version: 7.3.12
+-- Host: localhost:3388
+-- Waktu pembuatan: 09 Jan 2022 pada 08.05
+-- Versi server: 10.1.37-MariaDB
+-- Versi PHP: 7.0.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `device_broken_lost`
+-- Struktur dari tabel `device_broken_lost`
 --
 
 CREATE TABLE `device_broken_lost` (
@@ -46,7 +46,7 @@ CREATE TABLE `device_broken_lost` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `device_rented`
+-- Struktur dari tabel `device_rented`
 --
 
 CREATE TABLE `device_rented` (
@@ -65,26 +65,26 @@ CREATE TABLE `device_rented` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `device_type`
+-- Struktur dari tabel `device_type`
 --
 
 CREATE TABLE `device_type` (
   `id` int(11) NOT NULL,
-  `sub_unit` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `serial_number` varchar(255) NOT NULL,
-  `ip_address` varchar(255) NOT NULL,
-  `mac_address` varchar(255) NOT NULL,
-  `brand` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `year` varchar(4) NOT NULL,
-  `asset_number` varchar(255) NOT NULL,
-  `location` varchar(255) NOT NULL,
-  `total_port_rj45` int(11) NOT NULL,
-  `total_port_sfp` int(11) NOT NULL,
-  `total_port_qsfp` int(11) NOT NULL,
-  `owner` varchar(255) NOT NULL,
-  `status` varchar(255) NOT NULL,
+  `sub_unit` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `serial_number` varchar(255) DEFAULT NULL,
+  `ip_address` varchar(255) DEFAULT NULL,
+  `mac_address` varchar(255) DEFAULT NULL,
+  `brand` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `year` varchar(4) DEFAULT NULL,
+  `asset_number` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `total_port_rj45` int(11) DEFAULT NULL,
+  `total_port_sfp` int(11) DEFAULT NULL,
+  `total_port_qsfp` int(11) DEFAULT NULL,
+  `owner` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
   `created_date` datetime NOT NULL,
   `modified_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -92,7 +92,7 @@ CREATE TABLE `device_type` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Struktur dari tabel `user`
 --
 
 CREATE TABLE `user` (
@@ -112,53 +112,53 @@ CREATE TABLE `user` (
 --
 
 --
--- Indexes for table `device_broken_lost`
+-- Indeks untuk tabel `device_broken_lost`
 --
 ALTER TABLE `device_broken_lost`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `device_rented`
+-- Indeks untuk tabel `device_rented`
 --
 ALTER TABLE `device_rented`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `device_type`
+-- Indeks untuk tabel `device_type`
 --
 ALTER TABLE `device_type`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user`
+-- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `device_broken_lost`
+-- AUTO_INCREMENT untuk tabel `device_broken_lost`
 --
 ALTER TABLE `device_broken_lost`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `device_rented`
+-- AUTO_INCREMENT untuk tabel `device_rented`
 --
 ALTER TABLE `device_rented`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `device_type`
+-- AUTO_INCREMENT untuk tabel `device_type`
 --
 ALTER TABLE `device_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

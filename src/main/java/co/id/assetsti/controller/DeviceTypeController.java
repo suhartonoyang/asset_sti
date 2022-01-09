@@ -67,7 +67,7 @@ public class DeviceTypeController {
 
 		if (newDeviceType != null) {
 			resp.setCode(String.valueOf(HttpStatus.CREATED.value()));
-			resp.setMessage("Sucessfully Register!");
+			resp.setMessage("Data Sucessfully Saved!");
 			resp.setData(Arrays.asList(newDeviceType));
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp);

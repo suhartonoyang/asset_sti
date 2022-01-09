@@ -19,7 +19,7 @@ import co.id.assetsti.model.DeviceBrokenLost;
 import co.id.assetsti.service.DeviceBrokenLostService;
 import io.swagger.annotations.Api;
 
-@RequestMapping(value = "/api/device-rents")
+@RequestMapping(value = "/api/device-broken-losts")
 @RestController
 @CrossOrigin
 @Api(description = "for device rents")
@@ -67,7 +67,7 @@ public class DeviceBrokenLostController {
 
 		if (newDeviceBrokenLost != null) {
 			resp.setCode(String.valueOf(HttpStatus.CREATED.value()));
-			resp.setMessage("Sucessfully Register!");
+			resp.setMessage("Data Sucessfully Saved!");
 			resp.setData(Arrays.asList(newDeviceBrokenLost));
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp);

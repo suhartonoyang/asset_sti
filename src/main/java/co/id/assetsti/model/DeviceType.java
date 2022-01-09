@@ -23,35 +23,35 @@ public class DeviceType implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false, precision = 10)
 	private int id;
-	@Column(name = "sub_unit", nullable = false, length = 255)
+	@Column(name = "sub_unit", nullable = true, length = 255)
 	private String subUnit;
-	@Column(nullable = false, length = 255)
+	@Column(nullable = true, length = 255)
 	private String name;
-	@Column(name = "serial_number", nullable = false, length = 255)
+	@Column(name = "serial_number", nullable = true, length = 255)
 	private String serialNumber;
-	@Column(name = "ip_address", nullable = false, length = 255)
+	@Column(name = "ip_address", nullable = true, length = 255)
 	private String ipAddress;
-	@Column(name = "mac_address", nullable = false, length = 255)
+	@Column(name = "mac_address", nullable = true, length = 255)
 	private String macAddress;
-	@Column(nullable = false, length = 255)
+	@Column(nullable = true, length = 255)
 	private String brand;
-	@Column(nullable = false, length = 255)
+	@Column(nullable = true, length = 255)
 	private String type;
-	@Column(nullable = false, length = 4)
+	@Column(nullable = true, length = 4)
 	private String year;
-	@Column(name = "asset_number", nullable = false, length = 255)
+	@Column(name = "asset_number", nullable = true, length = 255)
 	private String assetNumber;
-	@Column(nullable = false, length = 255)
+	@Column(nullable = true, length = 255)
 	private String location;
-	@Column(name = "total_port_rj45", nullable = false, precision = 10)
+	@Column(name = "total_port_rj45", nullable = true, precision = 10)
 	private int totalPortRj45;
-	@Column(name = "total_port_sfp", nullable = false, precision = 10)
+	@Column(name = "total_port_sfp", nullable = true, precision = 10)
 	private int totalPortSfp;
-	@Column(name = "total_port_qsfp", nullable = false, precision = 10)
+	@Column(name = "total_port_qsfp", nullable = true, precision = 10)
 	private int totalPortQsfp;
-	@Column(nullable = false, length = 255)
+	@Column(nullable = true, length = 255)
 	private String owner;
-	@Column(nullable = false, length = 255)
+	@Column(nullable = true, length = 255)
 	private String status;
 	@Column(name = "created_date", nullable = false)
 	private Date createdDate;
