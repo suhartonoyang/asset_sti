@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,5 +72,22 @@ public class DeviceRentedController {
 			resp.setData(Arrays.asList(newDeviceRented));
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp);
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Response> deleteDeviceRentedById(@PathVariable Integer id) {
+		DeviceRented deviceRented = deviceRentedService.getDeviceRentedById(id);
+		Response resp = new Response();
+		if (deviceRented == null) {
+			resp.setCode(String.valueOf(HttpStatus.NOT_FOUND.value()));
+			resp.setMessage("Data not found");
+			resp.setData(null);
+		} else {
+			deviceRentedService.delteDeviceRentedById(id);
+			resp.setCode(String.valueOf(HttpStatus.OK.value()));
+			resp.setMessage("Data Successfully Deleted");
+			resp.setData(null);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(resp);
 	}
 }

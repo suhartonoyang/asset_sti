@@ -19,10 +19,14 @@ public class DeviceRentedService {
 	}
 
 	public DeviceRented getDeviceRentedById(Integer id) {
-		return deviceRentedRepository.getById(id);
+		return deviceRentedRepository.findById(id).orElse(null);
 	}
 	
 	public DeviceRented saveDeviceRented(DeviceRented deviceRented) {
 		return deviceRentedRepository.save(deviceRented);
+	} 
+	
+	public void delteDeviceRentedById(Integer id) {
+		deviceRentedRepository.deleteById(id);
 	}
 }

@@ -41,6 +41,8 @@ public class DeviceBrokenLost implements Serializable {
 	private String status;
 	@Column(nullable = false, length = 255)
 	private String notes;
+	@Column(length = 255)
+	private String deviceCategory;
 	@Column(name = "created_date", nullable = false)
 	private Date createdDate;
 	@Column(name = "modified_date")
@@ -229,6 +231,14 @@ public class DeviceBrokenLost implements Serializable {
 	 */
 	public void setNotes(String aNotes) {
 		notes = aNotes;
+	}
+
+	public String getDeviceCategory() {
+		return deviceCategory;
+	}
+
+	public void setDeviceCategory(String deviceCategory) {
+		this.deviceCategory = deviceCategory;
 	}
 
 	/**

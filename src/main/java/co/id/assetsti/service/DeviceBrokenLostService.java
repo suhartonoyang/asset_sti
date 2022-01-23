@@ -19,10 +19,14 @@ public class DeviceBrokenLostService {
 	}
 
 	public DeviceBrokenLost getDeviceBrokenLostById(Integer id) {
-		return deviceBrokenLostRepository.getById(id);
+		return deviceBrokenLostRepository.findById(id).orElse(null);
 	}
 	
 	public DeviceBrokenLost saveDeviceBrokenLost(DeviceBrokenLost deviceBrokenLost) {
 		return deviceBrokenLostRepository.save(deviceBrokenLost);
+	}
+	
+	public void deleteDeviceBrokenLostById(Integer id) {
+		deviceBrokenLostRepository.deleteById(id);
 	}
 }

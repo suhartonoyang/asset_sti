@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -86,6 +87,24 @@ public class UserController {
 			resp.setCode(String.valueOf(HttpStatus.OK.value()));
 			resp.setMessage(HttpStatus.OK.name());
 			resp.setData(Arrays.asList(user));
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(resp);
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Response> deleteUserById(@PathVariable Integer id) {
+		User user = userService.getUserById(id);
+		Response resp = new Response();
+		if (user == null) {
+			resp.setCode(String.valueOf(HttpStatus.NOT_FOUND.value()));
+			resp.setMessage("Data not found");
+			resp.setData(null);
+		} else {
+			
+			userService.deleteUserById(id);			
+			resp.setCode(String.valueOf(HttpStatus.OK.value()));
+			resp.setMessage("Data Successfully Deleted");
+			resp.setData(null);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(resp);
 	}

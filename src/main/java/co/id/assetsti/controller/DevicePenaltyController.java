@@ -16,74 +16,74 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.id.assetsti.bean.Response;
-import co.id.assetsti.model.DeviceBrokenLost;
-import co.id.assetsti.service.DeviceBrokenLostService;
+import co.id.assetsti.model.DevicePenalty;
+import co.id.assetsti.service.DevicePenaltyService;
 import io.swagger.annotations.Api;
 
-@RequestMapping(value = "/api/device-broken-losts")
+@RequestMapping(value = "/api/device-penalties")
 @RestController
 @CrossOrigin
-@Api(description = "for device rents")
-public class DeviceBrokenLostController {
-
+@Api(description = "for device types")
+public class DevicePenaltyController {
+	
 	@Autowired
-	private DeviceBrokenLostService deviceBrokenLostService;
-
+	private DevicePenaltyService devicePenaltyService;
+	
 	@GetMapping("")
-	public ResponseEntity<Response> getAllDeviceBrokenLosts() {
-		List<DeviceBrokenLost> deviceBrokenLosts = deviceBrokenLostService.getAllDeviceBrokenLosts();
+	public ResponseEntity<Response> getAllDevicePenalties() {
+		List<DevicePenalty> devicePenalties = devicePenaltyService.getAllDevicePenalties();
 		Response resp = new Response();
-		if (deviceBrokenLosts.isEmpty()) {
+		if (devicePenalties.isEmpty()) {
 			resp.setCode(String.valueOf(HttpStatus.NOT_FOUND.value()));
 			resp.setMessage("Data not found");
 			resp.setData(null);
 		} else {
 			resp.setCode(String.valueOf(HttpStatus.OK.value()));
 			resp.setMessage(HttpStatus.OK.name());
-			resp.setData(deviceBrokenLosts);
+			resp.setData(devicePenalties);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(resp);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Response> getDeviceBrokenLostById(@PathVariable Integer id) {
-		DeviceBrokenLost deviceBrokenLost = deviceBrokenLostService.getDeviceBrokenLostById(id);
+	public ResponseEntity<Response> getDevicePenaltyById(@PathVariable Integer id) {
+		DevicePenalty devicePenalty = devicePenaltyService.getDevicePenaltyById(id);
 		Response resp = new Response();
-		if (deviceBrokenLost == null) {
+		if (devicePenalty == null) {
 			resp.setCode(String.valueOf(HttpStatus.NOT_FOUND.value()));
 			resp.setMessage("Data not found");
 			resp.setData(null);
 		} else {
 			resp.setCode(String.valueOf(HttpStatus.OK.value()));
 			resp.setMessage(HttpStatus.OK.name());
-			resp.setData(Arrays.asList(deviceBrokenLost));
+			resp.setData(Arrays.asList(devicePenalty));
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(resp);
 	}
-
+	
 	@PostMapping("")
-	public ResponseEntity<Response> saveDeviceBrokenLost(@RequestBody DeviceBrokenLost deviceBrokenLost) throws Exception {
-		DeviceBrokenLost newDeviceBrokenLost = deviceBrokenLostService.saveDeviceBrokenLost(deviceBrokenLost);
+	public ResponseEntity<Response> saveDevicePenalty(@RequestBody DevicePenalty devicePenalty) throws Exception {
+		DevicePenalty newDevicePenalty = devicePenaltyService.saveDevicePenalty(devicePenalty);
 		Response resp = new Response();
 
-		if (newDeviceBrokenLost != null) {
+		if (newDevicePenalty != null) {
 			resp.setCode(String.valueOf(HttpStatus.CREATED.value()));
 			resp.setMessage("Data Sucessfully Saved!");
-			resp.setData(Arrays.asList(newDeviceBrokenLost));
+			resp.setData(Arrays.asList(newDevicePenalty));
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Response> deleteDeviceBrokenLostById(@PathVariable Integer id) {
-		DeviceBrokenLost deviceBrokenLost = deviceBrokenLostService.getDeviceBrokenLostById(id);
+	public ResponseEntity<Response> deleteDevicePenaltyById(@PathVariable Integer id) {
+		DevicePenalty devicePenalty = devicePenaltyService.getDevicePenaltyById(id);
 		Response resp = new Response();
-		if (deviceBrokenLost == null) {
+		if (devicePenalty == null) {
 			resp.setCode(String.valueOf(HttpStatus.NOT_FOUND.value()));
 			resp.setMessage("Data not found");
 			resp.setData(null);
 		} else {
-			deviceBrokenLostService.deleteDeviceBrokenLostById(id);
+			devicePenaltyService.deleteDevicePenaltyById(id);
 			resp.setCode(String.valueOf(HttpStatus.OK.value()));
 			resp.setMessage("Data Successfully Deleted");
 			resp.setData(null);

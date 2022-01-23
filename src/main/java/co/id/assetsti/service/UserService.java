@@ -23,7 +23,7 @@ public class UserService {
 	}
 	
 	public User login(String username, String password) {
-		User user = null;
+		User user = userRepository.findByNip(username);
 		if (user==null) 
 			return null;
 
@@ -39,7 +39,11 @@ public class UserService {
 	}
 	
 	public User getUserById(Integer id) {
-		return userRepository.getById(id);
+		return userRepository.findById(id).orElse(null);
+	}
+	
+	public void deleteUserById(Integer id) {
+		userRepository.deleteById(id);
 	}
 	
 }

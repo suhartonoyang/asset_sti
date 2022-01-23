@@ -36,6 +36,8 @@ public class User implements Serializable {
 	private String unitSubUnit;
 	@Column(length = 255)
 	private String location;
+	@Column(name = "handphoneNumber", length = 15)
+	private String handphoneNumber;
 	@Column(name = "is_admin", nullable = false, length = 1)
 	private boolean isAdmin;
 
@@ -161,7 +163,7 @@ public class User implements Serializable {
 		if (this.isAdmin) {
 			return unitSubUnit;
 		}
-		
+
 		return null;
 	}
 
@@ -194,6 +196,14 @@ public class User implements Serializable {
 	 */
 	public void setLocation(String aLocation) {
 		location = aLocation;
+	}
+
+	public String getHandphoneNumber() {
+		return handphoneNumber;
+	}
+
+	public void setHandphoneNumber(String handphoneNumber) {
+		this.handphoneNumber = handphoneNumber;
 	}
 
 	/**

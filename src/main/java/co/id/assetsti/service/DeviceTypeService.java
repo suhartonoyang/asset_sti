@@ -19,10 +19,14 @@ public class DeviceTypeService {
 	}
 	
 	public DeviceType getDeviceTypeById(Integer id) {
-		return deviceTypeRepository.getById(id);
+		return deviceTypeRepository.findById(id).orElse(null);
 	}
 	
 	public DeviceType saveDeviceType(DeviceType deviceType) {
 		return deviceTypeRepository.save(deviceType);
+	}
+	
+	public void deleteDeviceTypeById(Integer id) {
+		deviceTypeRepository.deleteById(id);
 	}
 }

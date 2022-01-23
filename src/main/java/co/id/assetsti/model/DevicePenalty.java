@@ -11,8 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "device_rented")
-public class DeviceRented implements Serializable {
+@Entity(name = "device_penalty")
+public class DevicePenalty implements Serializable {
 
 	/**
 	 * 
@@ -23,29 +23,25 @@ public class DeviceRented implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false, precision = 10)
 	private int id;
+	@Column(name = "device_category", nullable = false, length = 255)
+	private String deviceCategory;
 	@Column(nullable = false, length = 255)
 	private String name;
 	@Column(name = "serial_number", nullable = false, length = 255)
 	private String serialNumber;
-	@Column(nullable = false, length = 255)
-	private String brand;
-	@Column(name = "tenant_name", nullable = false, length = 255)
-	private String tenantName;
-	@Column(nullable = false, length = 255)
-	private String unit;
-	@Column(nullable = false, length = 255)
-	private String email;
+	@Column(nullable = false, length = 4)
+	private String year;
+	@Column(name = "total_penalty_day", nullable = false, precision = 10)
+	private int totalPenaltyDay;
 	@Column(nullable = false, length = 255)
 	private String status;
-	@Column(length = 255)
-	private String deviceCategory;
 	@Column(name = "created_date", nullable = false)
 	private Date createdDate;
 	@Column(name = "modified_date")
 	private Date modifiedDate;
 
 	/** Default constructor. */
-	public DeviceRented() {
+	public DevicePenalty() {
 		super();
 	}
 
@@ -65,6 +61,24 @@ public class DeviceRented implements Serializable {
 	 */
 	public void setId(int aId) {
 		id = aId;
+	}
+
+	/**
+	 * Access method for deviceCategory.
+	 *
+	 * @return the current value of deviceCategory
+	 */
+	public String getDeviceCategory() {
+		return deviceCategory;
+	}
+
+	/**
+	 * Setter method for deviceCategory.
+	 *
+	 * @param aDeviceCategory the new value for deviceCategory
+	 */
+	public void setDeviceCategory(String aDeviceCategory) {
+		deviceCategory = aDeviceCategory;
 	}
 
 	/**
@@ -104,75 +118,39 @@ public class DeviceRented implements Serializable {
 	}
 
 	/**
-	 * Access method for brand.
+	 * Access method for year.
 	 *
-	 * @return the current value of brand
+	 * @return the current value of year
 	 */
-	public String getBrand() {
-		return brand;
+	public String getYear() {
+		return year;
 	}
 
 	/**
-	 * Setter method for brand.
+	 * Setter method for year.
 	 *
-	 * @param aBrand the new value for brand
+	 * @param aYear the new value for year
 	 */
-	public void setBrand(String aBrand) {
-		brand = aBrand;
+	public void setYear(String aYear) {
+		year = aYear;
 	}
 
 	/**
-	 * Access method for tenantName.
+	 * Access method for totalPenaltyDay.
 	 *
-	 * @return the current value of tenantName
+	 * @return the current value of totalPenaltyDay
 	 */
-	public String getTenantName() {
-		return tenantName;
+	public int getTotalPenaltyDay() {
+		return totalPenaltyDay;
 	}
 
 	/**
-	 * Setter method for tenantName.
+	 * Setter method for totalPenaltyDay.
 	 *
-	 * @param aTenantName the new value for tenantName
+	 * @param aTotalPenaltyDay the new value for totalPenaltyDay
 	 */
-	public void setTenantName(String aTenantName) {
-		tenantName = aTenantName;
-	}
-
-	/**
-	 * Access method for unit.
-	 *
-	 * @return the current value of unit
-	 */
-	public String getUnit() {
-		return unit;
-	}
-
-	/**
-	 * Setter method for unit.
-	 *
-	 * @param aUnit the new value for unit
-	 */
-	public void setUnit(String aUnit) {
-		unit = aUnit;
-	}
-
-	/**
-	 * Access method for email.
-	 *
-	 * @return the current value of email
-	 */
-	public String getEmail() {
-		return email;
-	}
-
-	/**
-	 * Setter method for email.
-	 *
-	 * @param aEmail the new value for email
-	 */
-	public void setEmail(String aEmail) {
-		email = aEmail;
+	public void setTotalPenaltyDay(int aTotalPenaltyDay) {
+		totalPenaltyDay = aTotalPenaltyDay;
 	}
 
 	/**
@@ -191,14 +169,6 @@ public class DeviceRented implements Serializable {
 	 */
 	public void setStatus(String aStatus) {
 		status = aStatus;
-	}
-
-	public String getDeviceCategory() {
-		return deviceCategory;
-	}
-
-	public void setDeviceCategory(String deviceCategory) {
-		this.deviceCategory = deviceCategory;
 	}
 
 	/**
@@ -238,20 +208,20 @@ public class DeviceRented implements Serializable {
 	}
 
 	/**
-	 * Compares the key for this instance with another DeviceRented.
+	 * Compares the key for this instance with another DevicePenalty.
 	 *
 	 * @param other The object to compare to
-	 * @return True if other object is instance of class DeviceRented and the key
+	 * @return True if other object is instance of class DevicePenalty and the key
 	 *         objects are equal
 	 */
 	private boolean equalKeys(Object other) {
 		if (this == other) {
 			return true;
 		}
-		if (!(other instanceof DeviceRented)) {
+		if (!(other instanceof DevicePenalty)) {
 			return false;
 		}
-		DeviceRented that = (DeviceRented) other;
+		DevicePenalty that = (DevicePenalty) other;
 		if (this.getId() != that.getId()) {
 			return false;
 		}
@@ -259,16 +229,16 @@ public class DeviceRented implements Serializable {
 	}
 
 	/**
-	 * Compares this instance with another DeviceRented.
+	 * Compares this instance with another DevicePenalty.
 	 *
 	 * @param other The object to compare to
 	 * @return True if the objects are the same
 	 */
 	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof DeviceRented))
+		if (!(other instanceof DevicePenalty))
 			return false;
-		return this.equalKeys(other) && ((DeviceRented) other).equalKeys(this);
+		return this.equalKeys(other) && ((DevicePenalty) other).equalKeys(this);
 	}
 
 	/**
@@ -287,8 +257,9 @@ public class DeviceRented implements Serializable {
 
 	@Override
 	public String toString() {
-		return "DeviceRented [id=" + id + ", name=" + name + ", serialNumber=" + serialNumber + ", brand=" + brand + ", tenantName="
-				+ tenantName + ", unit=" + unit + ", email=" + email + ", status=" + status + "]";
+		return "DevicePenalty [id=" + id + ", deviceCategory=" + deviceCategory + ", name=" + name + ", serialNumber=" + serialNumber
+				+ ", year=" + year + ", totalPenaltyDay=" + totalPenaltyDay + ", status=" + status + ", createdDate=" + createdDate
+				+ ", modifiedDate=" + modifiedDate + "]";
 	}
 
 }
