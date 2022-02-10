@@ -34,8 +34,12 @@ public class DeviceTypeService {
 	public void deleteDeviceTypeById(Integer id) {
 		deviceTypeRepository.deleteById(id);
 	}
+	
+	public List<DeviceType> getDeviceTypesByDeviceCategory(String deviceCategory){
+		return deviceTypeRepository.findByDeviceCategory(deviceCategory);
+	}
 
-	public List<DeviceType> getDeviceTypesExcludeRented() {
+	public List<DeviceType> getDeviceTypesExcludeRented(String deviceCategory) {
 		List<DeviceRented> deviceRented = deviceRentedService.getAllDeviceRenteds();
 		List<String> serialNumberRented = deviceRented.stream().filter(f1 -> f1.getStatus().equalsIgnoreCase("ac"))
 				.map(m -> m.getSerialNumber()).collect(Collectors.toList());
@@ -44,6 +48,12 @@ public class DeviceTypeService {
 			return !serialNumberRented.contains(f1.getSerialNumber());
 		}).collect(Collectors.toList());
 
+		if (deviceCategory != null) {
+			System.out.println("masuk sini");
+			deviceTypeExcludeRented = deviceTypeExcludeRented.stream().filter(f1 -> f1.getDeviceCategory().equals(deviceCategory)).collect(Collectors.toList());
+		}
+
 		return deviceTypeExcludeRented;
 	}
+
 }

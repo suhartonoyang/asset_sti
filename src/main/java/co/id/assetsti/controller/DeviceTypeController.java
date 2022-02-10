@@ -31,14 +31,19 @@ public class DeviceTypeController {
 	private DeviceTypeService deviceTypeService;
 
 	@GetMapping("")
-	public ResponseEntity<Response> getAllDeviceTypes(@RequestParam Boolean isExcludeRented) {
+	public ResponseEntity<Response> getAllDeviceTypes(@RequestParam Boolean isExcludeRented,
+			@RequestParam(required = false) String deviceCategory) {
 		List<DeviceType> deviceTypes;
 		if (isExcludeRented) {
-			deviceTypes = deviceTypeService.getDeviceTypesExcludeRented();
+			deviceTypes = deviceTypeService.getDeviceTypesExcludeRented(deviceCategory);
 		} else {
-			deviceTypes = deviceTypeService.getAllDeviceTypes();
+			if (deviceCategory != null) {
+				deviceTypes = deviceTypeService.getDeviceTypesByDeviceCategory(deviceCategory);
+			} else {
+				deviceTypes = deviceTypeService.getAllDeviceTypes();
+			}
 		}
-		
+
 		Response resp = new Response();
 		if (deviceTypes.isEmpty()) {
 			resp.setCode(String.valueOf(HttpStatus.NOT_FOUND.value()));
