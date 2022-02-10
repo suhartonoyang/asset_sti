@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.id.assetsti.bean.Response;
@@ -25,13 +26,19 @@ import io.swagger.annotations.Api;
 @CrossOrigin
 @Api(description = "for device types")
 public class DeviceTypeController {
-	
+
 	@Autowired
 	private DeviceTypeService deviceTypeService;
-	
+
 	@GetMapping("")
-	public ResponseEntity<Response> getAllDeviceTypes() {
-		List<DeviceType> deviceTypes = deviceTypeService.getAllDeviceTypes();
+	public ResponseEntity<Response> getAllDeviceTypes(@RequestParam Boolean isExcludeRented) {
+		List<DeviceType> deviceTypes;
+		if (isExcludeRented) {
+			deviceTypes = deviceTypeService.getDeviceTypesExcludeRented();
+		} else {
+			deviceTypes = deviceTypeService.getAllDeviceTypes();
+		}
+		
 		Response resp = new Response();
 		if (deviceTypes.isEmpty()) {
 			resp.setCode(String.valueOf(HttpStatus.NOT_FOUND.value()));
@@ -60,7 +67,7 @@ public class DeviceTypeController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(resp);
 	}
-	
+
 	@PostMapping("")
 	public ResponseEntity<Response> saveDeviceType(@RequestBody DeviceType deviceType) throws Exception {
 		DeviceType newDeviceType = deviceTypeService.saveDeviceType(deviceType);
@@ -73,7 +80,7 @@ public class DeviceTypeController {
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Response> deleteDeviceTypeById(@PathVariable Integer id) {
 		DeviceType deviceType = deviceTypeService.getDeviceTypeById(id);

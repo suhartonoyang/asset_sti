@@ -29,4 +29,8 @@ public class DeviceRentedService {
 	public void delteDeviceRentedById(Integer id) {
 		deviceRentedRepository.deleteById(id);
 	}
+	
+	public List<DeviceRented> getDeviceRentedsByDeviceCategory(String deviceCategory){
+		return deviceRentedRepository.findByDeviceCategory(deviceCategory);
+	}
 }

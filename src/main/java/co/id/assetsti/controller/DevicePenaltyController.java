@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.id.assetsti.bean.Response;
@@ -25,13 +26,19 @@ import io.swagger.annotations.Api;
 @CrossOrigin
 @Api(description = "for device types")
 public class DevicePenaltyController {
-	
+
 	@Autowired
 	private DevicePenaltyService devicePenaltyService;
-	
+
 	@GetMapping("")
-	public ResponseEntity<Response> getAllDevicePenalties() {
-		List<DevicePenalty> devicePenalties = devicePenaltyService.getAllDevicePenalties();
+	public ResponseEntity<Response> getAllDevicePenalties(@RequestParam(required = false) String deviceCategory) {
+		List<DevicePenalty> devicePenalties;
+		if (deviceCategory != null) {
+			devicePenalties = devicePenaltyService.getDevicePenaltiesByDeviceCategory(deviceCategory);
+		} else {
+			devicePenalties = devicePenaltyService.getAllDevicePenalties();
+		}
+
 		Response resp = new Response();
 		if (devicePenalties.isEmpty()) {
 			resp.setCode(String.valueOf(HttpStatus.NOT_FOUND.value()));
@@ -60,7 +67,7 @@ public class DevicePenaltyController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(resp);
 	}
-	
+
 	@PostMapping("")
 	public ResponseEntity<Response> saveDevicePenalty(@RequestBody DevicePenalty devicePenalty) throws Exception {
 		DevicePenalty newDevicePenalty = devicePenaltyService.saveDevicePenalty(devicePenalty);
@@ -73,7 +80,7 @@ public class DevicePenaltyController {
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Response> deleteDevicePenaltyById(@PathVariable Integer id) {
 		DevicePenalty devicePenalty = devicePenaltyService.getDevicePenaltyById(id);

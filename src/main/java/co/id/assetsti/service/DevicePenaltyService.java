@@ -29,4 +29,8 @@ public class DevicePenaltyService {
 	public void deleteDevicePenaltyById(Integer id) {
 		devicePenaltyRepository.deleteById(id);
 	}
+	
+	public List<DevicePenalty> getDevicePenaltiesByDeviceCategory(String deviceCategory){
+		return devicePenaltyRepository.findByDeviceCategory(deviceCategory);
+	}
 }

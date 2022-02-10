@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.id.assetsti.bean.Response;
@@ -25,13 +26,18 @@ import io.swagger.annotations.Api;
 @CrossOrigin
 @Api(description = "for device rents")
 public class DeviceRentedController {
-	
+
 	@Autowired
 	private DeviceRentedService deviceRentedService;
-	
+
 	@GetMapping("")
-	public ResponseEntity<Response> getAllDeviceRenteds() {
-		List<DeviceRented> deviceTypes = deviceRentedService.getAllDeviceRenteds();
+	public ResponseEntity<Response> getAllDeviceRenteds(@RequestParam(required = false) String deviceCategory) {
+		List<DeviceRented> deviceTypes;
+		if (deviceCategory != null) {
+			deviceTypes = deviceRentedService.getDeviceRentedsByDeviceCategory(deviceCategory);
+		} else {
+			deviceTypes = deviceRentedService.getAllDeviceRenteds();
+		}
 		Response resp = new Response();
 		if (deviceTypes.isEmpty()) {
 			resp.setCode(String.valueOf(HttpStatus.NOT_FOUND.value()));
@@ -60,7 +66,7 @@ public class DeviceRentedController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(resp);
 	}
-	
+
 	@PostMapping("")
 	public ResponseEntity<Response> saveDeviceRented(@RequestBody DeviceRented deviceRented) throws Exception {
 		DeviceRented newDeviceRented = deviceRentedService.saveDeviceRented(deviceRented);
@@ -73,7 +79,7 @@ public class DeviceRentedController {
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Response> deleteDeviceRentedById(@PathVariable Integer id) {
 		DeviceRented deviceRented = deviceRentedService.getDeviceRentedById(id);

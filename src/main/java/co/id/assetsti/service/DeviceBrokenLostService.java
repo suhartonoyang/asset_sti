@@ -29,4 +29,8 @@ public class DeviceBrokenLostService {
 	public void deleteDeviceBrokenLostById(Integer id) {
 		deviceBrokenLostRepository.deleteById(id);
 	}
+	
+	public List<DeviceBrokenLost> getDeviceBrokenLostsByDeviceCategory(String deviceCategory) {
+		return deviceBrokenLostRepository.findByDeviceCategory(deviceCategory);
+	}
 }
