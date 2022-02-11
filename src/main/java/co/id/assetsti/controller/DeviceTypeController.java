@@ -1,9 +1,12 @@
 package co.id.assetsti.controller;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,9 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.id.assetsti.bean.DeviceTypeGrouping;
+import co.id.assetsti.bean.PdfRequest;
 import co.id.assetsti.bean.Response;
 import co.id.assetsti.model.DeviceType;
+import co.id.assetsti.model.User;
 import co.id.assetsti.service.DeviceTypeService;
+import co.id.assetsti.service.ExportFileService;
+import co.id.assetsti.service.UserService;
 import io.swagger.annotations.Api;
 
 @RequestMapping(value = "/api/device-types")
@@ -29,6 +37,12 @@ public class DeviceTypeController {
 
 	@Autowired
 	private DeviceTypeService deviceTypeService;
+	
+	@Autowired
+	private ExportFileService exportFileService;
+	
+	@Autowired
+	private UserService userService;
 
 	@GetMapping("")
 	public ResponseEntity<Response> getAllDeviceTypes(@RequestParam Boolean isExcludeRented,
@@ -101,5 +115,31 @@ public class DeviceTypeController {
 			resp.setData(null);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(resp);
+	}
+
+	@PostMapping("/report/pdf/download")
+	public ResponseEntity<Response> downloadReportPdf(@RequestBody PdfRequest request) {
+		Response resp = new Response();
+		resp.setCode(String.valueOf(HttpStatus.OK.value()));
+		resp.setMessage(HttpStatus.OK.name());
+
+		List<DeviceTypeGrouping> dataList = deviceTypeService.mappingDataReportPdf(request);
+		request.setData(dataList);
+		
+		User user = userService.getUserById(request.getUserId());
+		if (user!=null) {
+			request.setUserName(user.getName());
+		}else {
+			request.setUserName("No Name");
+		}
+		
+//		resp.setData(dataList);
+
+		String path = exportFileService.writeToPdf(request);
+		Path file = Paths.get(path);
+
+		resp.setData(Arrays.asList(file));
+
+		return ResponseEntity.ok().body(resp);
 	}
 }
