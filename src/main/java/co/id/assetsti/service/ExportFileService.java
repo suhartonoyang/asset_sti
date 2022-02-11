@@ -2,13 +2,11 @@ package co.id.assetsti.service;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -19,7 +17,6 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import co.id.assetsti.bean.DeviceTypeGrouping;
 import co.id.assetsti.bean.PdfRequest;
 
 @Service
@@ -27,7 +24,6 @@ public class ExportFileService {
 	@Value("${file.tempDir}")
 	private String BASE_DIR;
 
-	private Font fontBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
 	private Font font = new Font(Font.FontFamily.TIMES_ROMAN, 12);
 	private String[] headers = new String[] { "Jenis perangkat", "Jumlah perangkat yang disewa", "Jumlah perangkat yang rusak",
 			"Total perangkat" };
@@ -78,7 +74,7 @@ public class ExportFileService {
 		PdfPCell cell3 = new PdfPCell();
 		cell3.setBorder(0);
 		cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		cell3.setPhrase(new Phrase("Status: " + request.getDeviceCategory(), font));
+		cell3.setPhrase(new Phrase("Status: " + request.getStatus(), font));
 		table.addCell(cell3);
 
 		PdfPCell cell4 = new PdfPCell();
@@ -121,7 +117,7 @@ public class ExportFileService {
 
 	private void addRows(PdfPTable table, PdfRequest request) {
 		request.getData().stream().forEach(p -> {
-			table.addCell(p.getDeviceTypeName());
+			table.addCell(p.getDeviceCategory());
 			table.addCell(String.valueOf(p.getTotalDeviceRented()));
 			table.addCell(String.valueOf(p.getTotalDeviceBrokenLost()));
 			table.addCell(String.valueOf(p.getTotalDeviceType()));

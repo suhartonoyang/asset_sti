@@ -18,6 +18,6 @@ public class PdfRequest {
 	@Transient
 	private String userName;
 	private String year;
-	private String deviceCategory;
+	private String status;
 	private List<DeviceTypeGrouping> data;
 }

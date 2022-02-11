@@ -10,13 +10,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeviceTypeGrouping {
-	private String deviceTypeName;
+	private String deviceCategory;
 	private int totalDeviceRented;
 	private int totalDeviceBrokenLost;
 	private int totalDeviceType;
 	@Override
 	public String toString() {
-		return "DeviceTypeGrouping [deviceTypeName=" + deviceTypeName + ", totalDeviceRented=" + totalDeviceRented
+		return "DeviceTypeGrouping [deviceCategory=" + deviceCategory + ", totalDeviceRented=" + totalDeviceRented
 				+ ", totalDeviceBrokenLost=" + totalDeviceBrokenLost + ", totalDeviceType=" + totalDeviceType + "]";
 	}
 	

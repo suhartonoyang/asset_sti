@@ -50,8 +50,7 @@ public class DeviceTypeService {
 
 	public List<DeviceType> getDeviceTypesExcludeRented(String deviceCategory) {
 		List<DeviceRented> deviceRented = deviceRentedService.getAllDeviceRenteds();
-		List<String> serialNumberRented = deviceRented.stream().filter(f1 -> f1.getStatus().equalsIgnoreCase("ac"))
-				.map(m -> m.getSerialNumber()).collect(Collectors.toList());
+		List<String> serialNumberRented = deviceRented.stream().map(m -> m.getSerialNumber()).collect(Collectors.toList());
 
 		List<DeviceType> deviceTypeExcludeRented = deviceTypeRepository.findAll().stream().filter(f1 -> {
 			return !serialNumberRented.contains(f1.getSerialNumber());
@@ -68,31 +67,29 @@ public class DeviceTypeService {
 
 	public List<DeviceTypeGrouping> mappingDataReportPdf(PdfRequest request) {
 		List<DeviceTypeGrouping> dataList = new ArrayList<DeviceTypeGrouping>();
-		Map<String, String> deviceTypeMap = getDeviceTypesByDeviceCategory(request.getDeviceCategory()).stream()
-				.collect(Collectors.toMap(DeviceType::getSerialNumber, DeviceType::getName));
+		Map<String, String> deviceTypeMap = getAllDeviceTypes().stream().filter(f -> f.getStatus().equals(request.getStatus()))
+				.collect(Collectors.toMap(DeviceType::getSerialNumber, DeviceType::getDeviceCategory));
 
 //		deviceTypeMap.entrySet().stream().forEach(p -> {
 //			System.out.println(p.getKey() + " - " + p.getValue());
 //		});
 
-		List<DeviceRented> deviceRenteds = deviceRentedService.getDeviceRentedsByDeviceCategory(request.getDeviceCategory()).stream()
-				.filter(f -> {
-					SimpleDateFormat sdf = new SimpleDateFormat("YYYY");
-					String year = sdf.format(f.getCreatedDate());
-					return f.getStatus().equalsIgnoreCase("ac") && year.equals(request.getYear());
-				}).collect(Collectors.toList());
+		List<DeviceRented> deviceRenteds = deviceRentedService.getAllDeviceRenteds().stream().filter(f -> {
+			SimpleDateFormat sdf = new SimpleDateFormat("YYYY");
+			String year = sdf.format(f.getCreatedDate());
+			return f.getStatus().equals(request.getStatus()) && year.equals(request.getYear());
+		}).collect(Collectors.toList());
 
 //		System.out.println("device rented");
 //		deviceRenteds.stream().forEach(p -> {
 //			System.out.println(p.getSerialNumber() + " - " + p.getCreatedDate());
 //		});
 
-		List<DeviceBrokenLost> deviceBrokenLosts = deviceBrokenLostService.getDeviceBrokenLostsByDeviceCategory(request.getDeviceCategory())
-				.stream().filter(f -> {
-					SimpleDateFormat sdf = new SimpleDateFormat("YYYY");
-					String year = sdf.format(f.getCreatedDate());
-					return year.equals(request.getYear());
-				}).collect(Collectors.toList());
+		List<DeviceBrokenLost> deviceBrokenLosts = deviceBrokenLostService.getAllDeviceBrokenLosts().stream().filter(f -> {
+			SimpleDateFormat sdf = new SimpleDateFormat("YYYY");
+			String year = sdf.format(f.getCreatedDate());
+			return f.getStatus().equals(request.getStatus()) && year.equals(request.getYear());
+		}).collect(Collectors.toList());
 
 //		System.out.println("device broken lost");
 //		deviceBrokenLosts.stream().forEach(p -> {
@@ -102,7 +99,7 @@ public class DeviceTypeService {
 		List<DeviceTypeGrouping> dataListTemp = new ArrayList<DeviceTypeGrouping>();
 		deviceTypeMap.entrySet().stream().forEach(k -> {
 			DeviceTypeGrouping dataTemp = new DeviceTypeGrouping();
-			dataTemp.setDeviceTypeName(k.getValue());
+			dataTemp.setDeviceCategory(k.getValue());
 			int totalDeviceRented = (int) deviceRenteds.stream().filter(f -> f.getSerialNumber().equals(k.getKey())).count();
 			int totalDeviceBrokenLost = (int) deviceBrokenLosts.stream().filter(f -> f.getSerialNumber().equals(k.getKey())).count();
 			dataTemp.setTotalDeviceRented(totalDeviceRented);
@@ -111,22 +108,23 @@ public class DeviceTypeService {
 //			System.out.println(k.getValue() + ", rent: " + totalDeviceRented + ", brokenLost: " + totalDeviceBrokenLost);
 		});
 
-		List<String> deviceTypeNames = dataListTemp.stream().map(m -> m.getDeviceTypeName()).distinct().collect(Collectors.toList());
+		List<String> deviceTypeNames = dataListTemp.stream().map(m -> m.getDeviceCategory()).distinct().collect(Collectors.toList());
 		for (String s : deviceTypeNames) {
 			DeviceTypeGrouping data = new DeviceTypeGrouping();
-			int totalDeviceRented = dataListTemp.stream().filter(f -> f.getDeviceTypeName().equals(s))
+			int totalDeviceRented = dataListTemp.stream().filter(f -> f.getDeviceCategory().equals(s))
 					.mapToInt(i -> i.getTotalDeviceRented()).sum();
-			int totalDeviceBrokenLost = dataListTemp.stream().filter(f -> f.getDeviceTypeName().equals(s))
+			int totalDeviceBrokenLost = dataListTemp.stream().filter(f -> f.getDeviceCategory().equals(s))
 					.mapToInt(i -> i.getTotalDeviceBrokenLost()).sum();
 			int totalDeviceType = totalDeviceRented + totalDeviceBrokenLost;
 
-			data.setDeviceTypeName(s);
+			data.setDeviceCategory(s);
 			data.setTotalDeviceRented(totalDeviceRented);
 			data.setTotalDeviceBrokenLost(totalDeviceBrokenLost);
 			data.setTotalDeviceType(totalDeviceType);
 			dataList.add(data);
-		};
-		
+		}
+		;
+
 		return dataList;
 	}
 }

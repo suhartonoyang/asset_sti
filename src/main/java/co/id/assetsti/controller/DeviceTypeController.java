@@ -129,12 +129,8 @@ public class DeviceTypeController {
 		User user = userService.getUserById(request.getUserId());
 		if (user!=null) {
 			request.setUserName(user.getName());
-		}else {
-			request.setUserName("No Name");
 		}
 		
-//		resp.setData(dataList);
-
 		String path = exportFileService.writeToPdf(request);
 		Path file = Paths.get(path);
 
