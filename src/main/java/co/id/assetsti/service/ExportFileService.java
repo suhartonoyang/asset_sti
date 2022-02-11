@@ -28,24 +28,19 @@ public class ExportFileService {
 	private String[] headers = new String[] { "Jenis perangkat", "Jumlah perangkat yang disewa", "Jumlah perangkat yang rusak",
 			"Total perangkat" };
 
-	public String writeToPdf(PdfRequest request) {
+	public String writeToPdf(PdfRequest request) throws FileNotFoundException, DocumentException {
 		String fileName = "Report.pdf";
 		String file = BASE_DIR + fileName;
-		try {
-			Document document = new Document();
-			PdfWriter.getInstance(document, new FileOutputStream(file));
 
-			document.open();
-			addMetaData(document, request.getUserName());
-			addTitlePage(document, request);
-			addTableResult(document, request);
-			document.close();
+		Document document = new Document();
+		PdfWriter.getInstance(document, new FileOutputStream(file));
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		}
+		document.open();
+		addMetaData(document, request.getUserName());
+		addTitlePage(document, request);
+		addTableResult(document, request);
+		document.close();
+
 		return file;
 	}
 
@@ -94,7 +89,7 @@ public class ExportFileService {
 		table.addCell(cell6);
 
 		document.add(table);
-		
+
 		Paragraph p = new Paragraph();
 		addEmptyLine(p, 1);
 		document.add(p);
@@ -122,20 +117,19 @@ public class ExportFileService {
 			table.addCell(String.valueOf(p.getTotalDeviceBrokenLost()));
 			table.addCell(String.valueOf(p.getTotalDeviceType()));
 		});
-		
-		//set total
-		int grandTotalDeviceRented = request.getData().stream().mapToInt(m->m.getTotalDeviceRented()).sum();
-		int grandTotalDeviceBrokenLost = request.getData().stream().mapToInt(m->m.getTotalDeviceBrokenLost()).sum();
-		int grandTotalDeviceType = grandTotalDeviceRented + grandTotalDeviceBrokenLost ;
-		
-		
+
+		// set total
+		int grandTotalDeviceRented = request.getData().stream().mapToInt(m -> m.getTotalDeviceRented()).sum();
+		int grandTotalDeviceBrokenLost = request.getData().stream().mapToInt(m -> m.getTotalDeviceBrokenLost()).sum();
+		int grandTotalDeviceType = request.getData().stream().mapToInt(m -> m.getTotalDeviceType()).sum();
+
 		table.addCell("Total");
 		table.addCell(String.valueOf(grandTotalDeviceRented));
 		table.addCell(String.valueOf(grandTotalDeviceBrokenLost));
 		table.addCell(String.valueOf(grandTotalDeviceType));
-		
+
 	}
-	
+
 	private void addTableResult(Document document, PdfRequest request) throws DocumentException {
 		float[] columnWidths = { 15, 15, 15, 15 };
 		PdfPTable table = new PdfPTable(columnWidths);
@@ -144,5 +138,5 @@ public class ExportFileService {
 		addRows(table, request);
 		document.add(table);
 	}
-	
+
 }

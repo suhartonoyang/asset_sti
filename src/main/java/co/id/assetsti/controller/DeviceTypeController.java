@@ -1,5 +1,6 @@
 package co.id.assetsti.controller;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.itextpdf.text.DocumentException;
 
 import co.id.assetsti.bean.DeviceTypeGrouping;
 import co.id.assetsti.bean.PdfRequest;
@@ -118,7 +121,7 @@ public class DeviceTypeController {
 	}
 
 	@PostMapping("/report/pdf/download")
-	public ResponseEntity<Response> downloadReportPdf(@RequestBody PdfRequest request) {
+	public ResponseEntity<Response> downloadReportPdf(@RequestBody PdfRequest request) throws FileNotFoundException, DocumentException {
 		Response resp = new Response();
 		resp.setCode(String.valueOf(HttpStatus.OK.value()));
 		resp.setMessage(HttpStatus.OK.name());
