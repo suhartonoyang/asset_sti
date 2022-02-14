@@ -47,21 +47,38 @@ public class DeviceTypeService {
 		return deviceTypeRepository.findByDeviceCategory(deviceCategory);
 	}
 
-	public List<DeviceType> getDeviceTypesExcludeRented(String deviceCategory) {
+	public List<DeviceType> getDeviceTypesExcludeRented(String deviceCategory, String serialNumber) {
 		List<DeviceRented> deviceRented = deviceRentedService.getAllDeviceRenteds();
 		List<String> serialNumberRented = deviceRented.stream().map(m -> m.getSerialNumber()).collect(Collectors.toList());
 
-		List<DeviceType> deviceTypeExcludeRented = deviceTypeRepository.findAll().stream().filter(f1 -> {
+		List<DeviceType> deviceTypeExcludeRented = getAllDeviceTypes().stream().filter(f1 -> {
 			return !serialNumberRented.contains(f1.getSerialNumber());
 		}).collect(Collectors.toList());
 
 		if (deviceCategory != null) {
-			System.out.println("masuk sini");
-			deviceTypeExcludeRented = deviceTypeExcludeRented.stream().filter(f1 -> f1.getDeviceCategory().equals(deviceCategory))
+			deviceTypeExcludeRented = deviceTypeExcludeRented.stream().filter(f1 -> f1.getDeviceCategory().equalsIgnoreCase(deviceCategory))
+					.collect(Collectors.toList());
+		}
+
+		if (serialNumber != null) {
+			deviceTypeExcludeRented = deviceTypeExcludeRented.stream().filter(f1 -> f1.getSerialNumber().equalsIgnoreCase(serialNumber))
 					.collect(Collectors.toList());
 		}
 
 		return deviceTypeExcludeRented;
+	}
+
+	public List<DeviceType> getDeviceTypesByFilter(String deviceCategory, String serialNumber) {
+		List<DeviceType> data = getAllDeviceTypes();
+		if (deviceCategory != null) {
+			data = data.stream().filter(f -> f.getDeviceCategory().equalsIgnoreCase(deviceCategory)).collect(Collectors.toList());
+		}
+
+		if (serialNumber != null) {
+			data = data.stream().filter(f -> f.getSerialNumber().equalsIgnoreCase(serialNumber)).collect(Collectors.toList());
+		}
+
+		return data;
 	}
 
 	public List<DeviceTypeGrouping> mappingDataReportPdf(PdfRequest request) {

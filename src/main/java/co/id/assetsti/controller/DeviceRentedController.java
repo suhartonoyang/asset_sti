@@ -31,22 +31,18 @@ public class DeviceRentedController {
 	private DeviceRentedService deviceRentedService;
 
 	@GetMapping("")
-	public ResponseEntity<Response> getAllDeviceRenteds(@RequestParam(required = false) String deviceCategory) {
-		List<DeviceRented> deviceTypes;
-		if (deviceCategory != null) {
-			deviceTypes = deviceRentedService.getDeviceRentedsByDeviceCategory(deviceCategory);
-		} else {
-			deviceTypes = deviceRentedService.getAllDeviceRenteds();
-		}
+	public ResponseEntity<Response> getAllDeviceRenteds(@RequestParam(required = false) String deviceCategory,
+			@RequestParam(required = false) String serialNumber) {
+		List<DeviceRented> deviceRenteds = deviceRentedService.getDeviceRentedsByFilter(deviceCategory, serialNumber);
 		Response resp = new Response();
-		if (deviceTypes.isEmpty()) {
+		if (deviceRenteds.isEmpty()) {
 			resp.setCode(String.valueOf(HttpStatus.NOT_FOUND.value()));
 			resp.setMessage("Data not found");
 			resp.setData(null);
 		} else {
 			resp.setCode(String.valueOf(HttpStatus.OK.value()));
 			resp.setMessage(HttpStatus.OK.name());
-			resp.setData(deviceTypes);
+			resp.setData(deviceRenteds);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(resp);
 	}

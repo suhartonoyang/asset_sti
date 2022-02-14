@@ -31,14 +31,9 @@ public class DevicePenaltyController {
 	private DevicePenaltyService devicePenaltyService;
 
 	@GetMapping("")
-	public ResponseEntity<Response> getAllDevicePenalties(@RequestParam(required = false) String deviceCategory) {
-		List<DevicePenalty> devicePenalties;
-		if (deviceCategory != null) {
-			devicePenalties = devicePenaltyService.getDevicePenaltiesByDeviceCategory(deviceCategory);
-		} else {
-			devicePenalties = devicePenaltyService.getAllDevicePenalties();
-		}
-
+	public ResponseEntity<Response> getAllDevicePenalties(@RequestParam(required = false) String deviceCategory,
+			@RequestParam(required = false) String serialNumber) {
+		List<DevicePenalty> devicePenalties = devicePenaltyService.getDevicePenaltiesByFilter(deviceCategory, serialNumber);
 		Response resp = new Response();
 		if (devicePenalties.isEmpty()) {
 			resp.setCode(String.valueOf(HttpStatus.NOT_FOUND.value()));

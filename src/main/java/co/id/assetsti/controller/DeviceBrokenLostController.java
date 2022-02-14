@@ -31,13 +31,9 @@ public class DeviceBrokenLostController {
 	private DeviceBrokenLostService deviceBrokenLostService;
 
 	@GetMapping("")
-	public ResponseEntity<Response> getAllDeviceBrokenLosts(@RequestParam(required = false) String deviceCategory) {
-		List<DeviceBrokenLost> deviceBrokenLosts;
-		if (deviceCategory != null) {
-			deviceBrokenLosts = deviceBrokenLostService.getDeviceBrokenLostsByDeviceCategory(deviceCategory);
-		} else {
-			deviceBrokenLosts = deviceBrokenLostService.getAllDeviceBrokenLosts();
-		}
+	public ResponseEntity<Response> getAllDeviceBrokenLosts(@RequestParam(required = false) String deviceCategory,
+			@RequestParam(required = false) String serialNumber) {
+		List<DeviceBrokenLost> deviceBrokenLosts = deviceBrokenLostService.getDeviceBrokenLostsByFilter(deviceCategory, serialNumber);
 		Response resp = new Response();
 		if (deviceBrokenLosts.isEmpty()) {
 			resp.setCode(String.valueOf(HttpStatus.NOT_FOUND.value()));

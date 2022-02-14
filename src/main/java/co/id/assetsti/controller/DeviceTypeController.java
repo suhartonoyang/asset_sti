@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,25 +39,21 @@ public class DeviceTypeController {
 
 	@Autowired
 	private DeviceTypeService deviceTypeService;
-	
+
 	@Autowired
 	private ExportFileService exportFileService;
-	
+
 	@Autowired
 	private UserService userService;
 
 	@GetMapping("")
 	public ResponseEntity<Response> getAllDeviceTypes(@RequestParam Boolean isExcludeRented,
-			@RequestParam(required = false) String deviceCategory) {
+			@RequestParam(required = false) String deviceCategory, @RequestParam(required = false) String serialNumber) {
 		List<DeviceType> deviceTypes;
 		if (isExcludeRented) {
-			deviceTypes = deviceTypeService.getDeviceTypesExcludeRented(deviceCategory);
+			deviceTypes = deviceTypeService.getDeviceTypesExcludeRented(deviceCategory, serialNumber);
 		} else {
-			if (deviceCategory != null) {
-				deviceTypes = deviceTypeService.getDeviceTypesByDeviceCategory(deviceCategory);
-			} else {
-				deviceTypes = deviceTypeService.getAllDeviceTypes();
-			}
+			deviceTypes = deviceTypeService.getDeviceTypesByFilter(deviceCategory, serialNumber);
 		}
 
 		Response resp = new Response();
@@ -128,12 +123,12 @@ public class DeviceTypeController {
 
 		List<DeviceTypeGrouping> dataList = deviceTypeService.mappingDataReportPdf(request);
 		request.setData(dataList);
-		
+
 		User user = userService.getUserById(request.getUserId());
-		if (user!=null) {
+		if (user != null) {
 			request.setUserName(user.getName());
 		}
-		
+
 		String path = exportFileService.writeToPdf(request);
 		Path file = Paths.get(path);
 
